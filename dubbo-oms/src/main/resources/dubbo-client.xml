@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://code.alibabatech.com/schema/dubbo
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="dubbo-oms" />
+    <!-- 使用zookeeper注册中心暴露服务地址,多个地址中间用,号隔开 ?backup=192.168.137.131:2181,192.168.137.132:2181 -->
+    <dubbo:registry address="zookeeper://182.92.189.235:2181" />
+
+
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:reference id="demoService" interface="com.xiu.dubbo.service.DemoService" />
+    <!--失败自动切换，当出现失败，重试其它服务器,通常用于读操作，但重试会带来更长延迟 ,可通过retries="2"来设置重试次数(不含第一次)。
+    默认就是failover,可以不写 ,包括(failfast/failback/forking) ,forks="2",并行调用多个服务器，只要一个成功即返回。
+    通常用于实时性要求较高的读操作，但需要浪费更多服务资源。可通过它来设置最大并行数。 -->
+
+    <!-- 也可以使用注解的形式进行处理-->
+    <!--<dubbo:annotation package="com.xiu.dubbo.service" />-->
+
+    <bean id ="omsDemoService" class="com.xiu.dubbo.oms.service.impl.OmsDemoServiceImpl" />
+
+
+</beans>

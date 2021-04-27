@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://code.alibabatech.com/schema/dubbo
+http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <!-- 具体的实现bean -->
+    <bean id="demoService" class="com.xiu.dubbo.service.impl.DemoServiceImpl" />
+
+    <!--  dubbo相关配置  -->
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="dubbo-core" />
+    <!-- 使用zookeeper注册中心暴露服务地址,多个地址中间用,号隔开 ?backup=192.168.137.131:2181,192.168.137.132:2181 -->
+    <dubbo:registry address="zookeeper://182.92.189.235:2181" />
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20881" />
+
+    <!-- 声明需要暴露的服务接口 -->
+    <!--<dubbo:service timeout="3000" interface="com.xiu.dubbo.service.DemoService" ref="demoService"-->
+                   <!--cluster="failover" />-->
+
+    <!-- 也可以使用注解的形式进行处理  使用注解的方式需要对服务提供者使用
+         @Service(dubbo自己的注解而非Spring) 服务使用者使用@Reference注解修饰  -->
+    <dubbo:annotation package="com.xiu.dubbo.service" />
+</beans>
